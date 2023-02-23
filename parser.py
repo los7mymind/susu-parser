@@ -10,19 +10,16 @@ content = [i for i in temp if
            str(type(i)) != "<class 'bs4.element.NavigableString'>"]
 
 urls = [str(i).split('\"')[1] for i in content]
-audiences = []
+result = set()
 
-for i in range(len(urls)):
-    temp = module.request_groups(urls[i])
+for i in urls:
+    temp = module.request_groups(i)
     group_urls = module.request_transform(temp)
 
     for j in group_urls:
-        audiences.append(module.captured_audiences(j))
-
-result = set()
-for i in audiences:
-    for j in i:
-        result.add(j)
+        t = module.captured_audiences(j)
+        for k in t:
+            result.add(k)
 
 with open("result.txt", "w+") as file:
     file.write(str(result))
